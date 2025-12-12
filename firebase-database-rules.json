@@ -1,0 +1,184 @@
+{
+  "rules": {
+    ".read": "auth != null",
+    ".write": "auth != null",
+    
+    "users": {
+      "$uid": {
+        ".read": "$uid === auth.uid",
+        ".write": "$uid === auth.uid",
+        "role": {
+          ".validate": "newData.val() === 'admin' || newData.val() === 'staff'"
+        }
+      }
+    },
+    
+    "categories": {
+      "$categoryID": {
+        "categoryID": {
+          ".validate": "newData.isString() && newData.val() === $categoryID"
+        },
+        "name": {
+          ".validate": "newData.isString() && newData.val().length > 0"
+        },
+        "description": {
+          ".validate": "newData.isString()"
+        }
+      }
+    },
+    
+    "products": {
+      "$productID": {
+        "productID": {
+          ".validate": "newData.isString() && newData.val() === $productID"
+        },
+        "name": {
+          ".validate": "newData.isString() && newData.val().length > 0"
+        },
+        "description": {
+          ".validate": "newData.isString()"
+        },
+        "price": {
+          ".validate": "newData.isNumber() && newData.val() >= 0"
+        },
+        "categoryID": {
+          ".validate": "newData.isString() && newData.val().length > 0"
+        },
+        "recipe": {
+          ".validate": "newData.hasChildren()"
+        },
+        "$recipeItem": {
+          "inventoryID": {
+            ".validate": "newData.isString() && newData.val().length > 0"
+          },
+          "quantity": {
+            ".validate": "newData.isNumber() && newData.val() > 0"
+          },
+          "unit": {
+            ".validate": "newData.isString()"
+          }
+        },
+        "image": {
+          ".validate": "newData.isString()"
+        }
+      }
+    },
+    
+    "suppliers": {
+      "$supplierID": {
+        "supplierID": {
+          ".validate": "newData.isString() && newData.val() === $supplierID"
+        },
+        "name": {
+          ".validate": "newData.isString() && newData.val().length > 0"
+        },
+        "contactInfo": {
+          ".validate": "newData.isString()"
+        }
+      }
+    },
+    
+    "inventory": {
+      "$inventoryID": {
+        "inventoryID": {
+          ".validate": "newData.isString() && newData.val() === $inventoryID"
+        },
+        "name": {
+          ".validate": "newData.isString() && newData.val().length > 0"
+        },
+        "description": {
+          ".validate": "newData.isString()"
+        },
+        "supplierID": {
+          ".validate": "newData.isString() && newData.val().length > 0"
+        },
+        "categoryID": {
+          ".validate": "newData.isString()"
+        },
+        "quantity": {
+          ".validate": "newData.isNumber() && newData.val() >= 0"
+        },
+        "unit": {
+          ".validate": "newData.isString()"
+        },
+        "reorderPoint": {
+          ".validate": "newData.isNumber() && newData.val() >= 0"
+        },
+        "lastUpdated": {
+          ".validate": "newData.isString()"
+        }
+      }
+    },
+    
+    "orders": {
+      "$orderID": {
+        "orderID": {
+          ".validate": "newData.isString() && newData.val() === $orderID"
+        },
+        "orderDate": {
+          ".validate": "newData.isString()"
+        },
+        "customerID": {
+          ".validate": "newData.isString()"
+        },
+        "employeeID": {
+          ".validate": "newData.isString() && newData.val().length > 0"
+        },
+        "items": {
+          ".validate": "newData.hasChildren()"
+        },
+        "subtotal": {
+          ".validate": "newData.isNumber() && newData.val() >= 0"
+        },
+        "discountType": {
+          ".validate": "newData.val() === 'none' || newData.val() === 'pwd' || newData.val() === 'senior'"
+        },
+        "discountAmount": {
+          ".validate": "newData.isNumber() && newData.val() >= 0"
+        },
+        "totalAmount": {
+          ".validate": "newData.isNumber() && newData.val() >= 0"
+        },
+        "paymentMethod": {
+          ".validate": "newData.val() === 'cash' || newData.val() === 'card' || newData.val() === 'e-wallet'"
+        },
+        "transactionReference": {
+          ".validate": "newData.isString()"
+        },
+        "amountTendered": {
+          ".validate": "newData.isNumber() && newData.val() >= 0"
+        },
+        "change": {
+          ".validate": "newData.isNumber() && newData.val() >= 0"
+        },
+        "status": {
+          ".validate": "newData.val() === 'pending' || newData.val() === 'completed' || newData.val() === 'cancelled'"
+        }
+      }
+    },
+    
+    "carts": {
+      ".read": true,
+      ".write": "auth != null",
+      "$terminalId": {
+        "items": {
+          ".validate": "newData.hasChildren()"
+        },
+        "$itemIndex": {
+          "productID": {
+            ".validate": "newData.isString() && newData.val().length > 0"
+          },
+          "quantity": {
+            ".validate": "newData.isNumber() && newData.val() > 0"
+          },
+          "priceAtSale": {
+            ".validate": "newData.isNumber() && newData.val() >= 0"
+          }
+        },
+        "lastUpdated": {
+          ".validate": "newData.isString()"
+        }
+      }
+    }
+  }
+}
